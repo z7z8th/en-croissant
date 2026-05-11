@@ -74,6 +74,8 @@ function BestMovesComponent({
   dragHandleProps,
   orientation,
 }: BestMovesProps) {
+  console.log("engine", engine);
+
   const { t } = useTranslation();
 
   const activeTab = useAtomValue(activeTabAtom);
@@ -86,19 +88,25 @@ function BestMovesComponent({
       defaultSettings: engine.settings ?? undefined,
       defaultGo: engine.go ?? undefined,
       tab: activeTab!,
+      enabled: !!engine.enabled,
     }),
   );
 
+  console.log("settings", settings);
+
+  // sync to atom of engine settings in memory
   useEffect(() => {
     if (settings.synced) {
       setSettings2((prev) => ({
         ...prev,
         go: engine.go || prev.go,
         settings: engine.settings || prev.settings,
+        enabled: engine.enabled || prev.enabled,
       }));
     }
   }, [engine.settings, engine.go, settings.synced, setSettings2]);
 
+  // sync to atom of engine settings in engines.json on disk
   const setSettings = useCallback(
     (fn: (prev: Settings) => Settings) => {
       const newSettings = fn(settings);
@@ -106,7 +114,14 @@ function BestMovesComponent({
       if (newSettings.synced) {
         setEngines(async (prev) =>
           (await prev).map((o) =>
-            o.id === engine.id ? { ...o, settings: newSettings.settings, go: newSettings.go } : o,
+            o.id === engine.id
+              ? {
+                  ...o,
+                  settings: newSettings.settings,
+                  go: newSettings.go,
+                  enabled: newSettings.enabled,
+                }
+              : o,
           ),
         );
       }

@@ -76,6 +76,8 @@ function AnalysisPanel() {
     [optimisticEngines],
   );
 
+  console.log("loadedEngines", loadedEngines);
+
   const [, enable] = useAtom(enableAllAtom);
   const allEnabled = useAtomValue(allEnabledAtom);
 
