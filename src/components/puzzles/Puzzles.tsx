@@ -565,6 +565,7 @@ function Puzzles({ id }: { id: string }) {
                             ? "black"
                             : "white",
                       },
+                      position: [0]
                     })
                   }
                 >
