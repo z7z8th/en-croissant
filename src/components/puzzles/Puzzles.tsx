@@ -138,8 +138,9 @@ function Puzzles({ id }: { id: string }) {
       ? wonPuzzles.reduce((acc, p) => acc + (p.timeSpent || 0), 0) / wonPuzzles.length / 1000
       : 0;
 
-  function setPuzzle(puzzle: { fen: string; moves: string[] }) {
+  async function setPuzzle(puzzle: { fen: string; moves: string[] }) {
     setFen(puzzle.fen);
+    await new Promise((r) => setTimeout(r, 700));
     makeMove({ payload: parseUci(puzzle.moves[0])! });
   }
 
