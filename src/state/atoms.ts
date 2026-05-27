@@ -4,7 +4,7 @@ import { exists, mkdir, readTextFile, writeTextFile } from "@tauri-apps/plugin-f
 import { parseUci } from "chessops";
 import { INITIAL_FEN, makeFen } from "chessops/fen";
 import equal from "fast-deep-equal";
-import { atom, type PrimitiveAtom } from "jotai";
+import { atom, useAtom, type PrimitiveAtom } from "jotai";
 import { atomFamily, atomWithStorage, createJSONStorage, unwrap } from "jotai/utils";
 import type { AtomFamily } from "jotai/vanilla/utils/atomFamily";
 import type {
@@ -709,4 +709,5 @@ export const enableAllAtom = atom(null, (get, set, value: boolean) => {
         });
         set(atom, { ...get(atom), enabled: value });
     }
+    set(enginesAtom, async (prev) => (await prev).map((o) => ({ ...o, enabled: value })));
 });
