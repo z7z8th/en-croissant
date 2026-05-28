@@ -77,12 +77,15 @@ function PuzzleBoard({
   const showCoordinates = useAtomValue(showCoordinatesAtom);
 
   async function checkMove(move: Move) {
+    console.log('checkMove pos', pos, 'puzzle', puzzle, 'move', move)
     if (!pos) return;
     if (!puzzle) return;
 
     const newPos = pos.clone();
     const uci = makeUci(move);
     newPos.play(move);
+
+    console.log('uci pos', uci)
 
     if (puzzle.moves[currentMove] === uci || newPos.isCheckmate()) {
       if (currentMove === puzzle.moves.length - 1) {
@@ -98,6 +101,7 @@ function PuzzleBoard({
         }
       }
       const newMoves = puzzle.moves.slice(currentMove, currentMove + 2);
+      console.log('newMoves', newMoves)
       makeMoves({
         payload: newMoves,
         mainline: true,
@@ -106,7 +110,7 @@ function PuzzleBoard({
     } else {
       makeMove({
         payload: move,
-        changePosition: false,
+        changePosition: currentMove >= puzzle.moves.length,
         changeHeaders: false,
       });
       if (!ended) {
@@ -118,6 +122,9 @@ function PuzzleBoard({
   }
 
   const { ref: parentRef, height: parentHeight } = useElementSize();
+
+  console.log('position', position)
+  console.log('currentMove', currentMove)
 
   return (
     <Box w="100%" h="100%" ref={parentRef}>
@@ -159,12 +166,13 @@ function PuzzleBoard({
           }}
           movable={{
             free: false,
-            color:
-              puzzle &&
-              equal(position, Array(currentMove).fill(0)) &&
-              (puzzle.completion === "incomplete" || puzzle.completion === "incorrect")
-                ? turn
-                : undefined,
+            // color:
+            //   puzzle &&
+            //   equal(position, Array(currentMove).fill(0)) &&
+            //   (puzzle.completion === "incomplete" || puzzle.completion === "incorrect")
+            //     ? turn
+            //     : undefined,
+            color: turn,
             dests: dests,
             showDests: showDests,
             events: {
