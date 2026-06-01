@@ -8,7 +8,13 @@ import { useAtom, useAtomValue } from "jotai";
 import { useContext, useState } from "react";
 import { useStore } from "zustand";
 import { Chessground } from "@/chessground/Chessground";
-import { jumpToNextPuzzleAtom, moveHighlightAtom, showCoordinatesAtom, showDestsAtom, eraseDrawablesOnClickAtom } from "@/state/atoms";
+import {
+  jumpToNextPuzzleAtom,
+  moveHighlightAtom,
+  showCoordinatesAtom,
+  showDestsAtom,
+  eraseDrawablesOnClickAtom,
+} from "@/state/atoms";
 import classes from "@/styles/Chessboard.module.css";
 import { positionFromFen } from "@/utils/chessops";
 import type { Completion, Puzzle } from "@/utils/puzzles";
@@ -77,7 +83,7 @@ function PuzzleBoard({
   const showCoordinates = useAtomValue(showCoordinatesAtom);
 
   async function checkMove(move: Move) {
-    console.log('checkMove pos', pos, 'puzzle', puzzle, 'move', move)
+    console.log("checkMove pos", pos, "puzzle", puzzle, "move", move);
     if (!pos) return;
     if (!puzzle) return;
 
@@ -85,7 +91,7 @@ function PuzzleBoard({
     const uci = makeUci(move);
     newPos.play(move);
 
-    console.log('uci pos', uci)
+    console.log("uci pos", uci);
 
     if (puzzle.moves[currentMove] === uci || newPos.isCheckmate()) {
       if (currentMove === puzzle.moves.length - 1) {
@@ -100,8 +106,11 @@ function PuzzleBoard({
           return;
         }
       }
-      const newMoves = puzzle.moves.slice(currentMove, currentMove + 2);
-      console.log('newMoves', newMoves)
+      const newMoves =
+        puzzle.moves[currentMove] === uci
+          ? puzzle.moves.slice(currentMove, currentMove + 2)
+          : [uci];
+      console.log("newMoves", newMoves);
       makeMoves({
         payload: newMoves,
         mainline: true,
@@ -123,8 +132,8 @@ function PuzzleBoard({
 
   const { ref: parentRef, height: parentHeight } = useElementSize();
 
-  console.log('position', position)
-  console.log('currentMove', currentMove)
+  console.log("position", position);
+  console.log("currentMove", currentMove);
 
   return (
     <Box w="100%" h="100%" ref={parentRef}>

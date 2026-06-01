@@ -194,8 +194,7 @@ function Puzzles({ id }: { id: string }) {
   async function changeCompletion(completion: Completion) {
     const timeSpent = timerStart !== null ? Date.now() - timerStart : 0;
     const puzzle = puzzles[currentPuzzle];
-    if (puzzles[currentPuzzle].completion == "correct")
-      return;
+    if (puzzles[currentPuzzle].completion == "correct") return;
     setPuzzles((puzzles) => {
       puzzles[currentPuzzle].completion = completion;
       puzzles[currentPuzzle].timeSpent = timeSpent;
@@ -567,7 +566,7 @@ function Puzzles({ id }: { id: string }) {
                             ? "black"
                             : "white",
                       },
-                      position: [0]
+                      position: [0],
                     })
                   }
                 >
