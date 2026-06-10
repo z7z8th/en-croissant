@@ -335,9 +335,9 @@ function Puzzles({ id }: { id: string }) {
     const newSession: SavedPuzzleSession = {
       id: crypto.randomUUID(),
       name,
-      savedAt: BigInt(Date.now()),
+      savedAt: Date.now(),
       puzzles: puzzles.map(toSessionPuzzle),
-      currentPuzzle: BigInt(currentPuzzle),
+      currentPuzzle: currentPuzzle,
       dbPath: selectedDb,
     };
     persistSessions([newSession, ...savedSessions]);
@@ -375,9 +375,9 @@ function Puzzles({ id }: { id: string }) {
         s.id === sessionId
           ? {
               ...s,
-              savedAt: BigInt(Date.now()),
+              savedAt: Date.now(),
               puzzles: puzzles.map(toSessionPuzzle),
-              currentPuzzle: BigInt(currentPuzzle),
+              currentPuzzle: currentPuzzle,
               dbPath: selectedDb,
             }
           : s,
@@ -409,9 +409,9 @@ function Puzzles({ id }: { id: string }) {
       const autosave: SavedPuzzleSession = {
         id: AUTO_SAVE_SESSION_ID,
         name: "Autosave",
-        savedAt: BigInt(Date.now()),
+        savedAt: Date.now(),
         puzzles: puzzles.map(toSessionPuzzle),
-        currentPuzzle: BigInt(currentPuzzle),
+        currentPuzzle: currentPuzzle,
         dbPath: selectedDb,
       };
       autosaveRef.current = autosave;

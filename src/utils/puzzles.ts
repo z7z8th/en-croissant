@@ -52,7 +52,7 @@ export function toSessionPuzzle(p: Puzzle): SessionPuzzle {
         popularity: p.popularity,
         nbPlays: p.nb_plays,
         completion: p.completion,
-        timeSpent: p.timeSpent !== undefined ? BigInt(p.timeSpent) : null,
+        timeSpent: p.timeSpent !== undefined ? Number(p.timeSpent) : null,
         themes: p.themes ?? null,
     };
 }
